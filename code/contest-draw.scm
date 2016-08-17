@@ -1,0 +1,17 @@
+(define (contest-mouser-init ip) (open-tcp-stream-socket ip 12345))
+
+(define (contest-drawer-helper g mouser-sys data)
+  (draw-map g data)
+  (contest-drawer-helper g mouser-sys (get-input mouser-sys))
+)
+
+;; To run this robot, try (test-bot #t 500 50)
+(define (contest-drawer ip)
+  (let* ((mouser-sys (contest-mouser-init ip))
+	 (initial-data (get-input mouser-sys))
+	 (g (graphics-init (cadr (assq 'map-size initial-data))
+			   (caddr (assq 'map-size initial-data))))
+	)
+    (contest-drawer-helper g mouser-sys initial-data)
+    )
+)
